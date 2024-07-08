@@ -1,7 +1,7 @@
-import { Button } from './components/ui';
+import { Router } from './pages/Router';
 
 function App() {
-  return <Button>Добавить чото</Button>;
+  return <Router />;
 }
 
 export { App };
