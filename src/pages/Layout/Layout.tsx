@@ -1,15 +1,12 @@
-import { useState } from 'react';
 import { Outlet } from 'react-router-dom';
-
-import { ChatList } from '@/components';
 import clsx from 'clsx';
 
-const Layout = () => {
-  const [isOpen, setIsOpen] = useState(true);
+import { ChatList } from '@/components';
 
-  const changeIsOpen = () => {
-    setIsOpen(!isOpen);
-  };
+import { useLayout } from './useLayout';
+
+const Layout = () => {
+  const { isOpen, changeIsOpen } = useLayout();
 
   return (
     <div className="flex h-screen">

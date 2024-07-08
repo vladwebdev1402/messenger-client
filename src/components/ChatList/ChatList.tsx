@@ -1,8 +1,10 @@
 import { ArrowLeftToLine } from 'lucide-react';
+import clsx from 'clsx';
 
 import { Button, Typography } from '../ui';
 import { ChatCard } from '../ChatCard';
-import clsx from 'clsx';
+
+import { useChatList } from './useChatList';
 
 type ChatListProps = {
   isLayoutOpen: boolean;
@@ -10,6 +12,8 @@ type ChatListProps = {
 };
 
 const ChatList = ({ isLayoutOpen, changeIsOpenLayout }: ChatListProps) => {
+  const { data, error, isLoading } = useChatList();
+
   return (
     <div>
       <div
