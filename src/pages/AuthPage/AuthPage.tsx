@@ -1,16 +1,11 @@
+import { Loader2 } from 'lucide-react';
+
 import { AuthForm, Button, Typography } from '@/components';
-import { useState } from 'react';
+import { useAuthPage } from './useAuthPage';
 
 const AuthPage = () => {
-  const [mode, setMode] = useState<'signin' | 'signup'>('signin');
-
-  const onSumbit = (data: { login: string; password: string }) => {
-    console.log(data);
-  };
-
-  const handleModeButtonClick = () => {
-    setMode(mode === 'signin' ? 'signup' : 'signin');
-  };
+  const { mode, signIn, signUp, handleModeButtonClick, onSumbit } =
+    useAuthPage();
 
   return (
     <div className="container max-w-md mt-24">
@@ -20,7 +15,14 @@ const AuthPage = () => {
       <div className="mt-4">
         <AuthForm onSubmit={onSumbit}>
           <div className="flex flex-col gap-2">
-            <Button type="submit" className="w-full">
+            <Button
+              type="submit"
+              className="w-full"
+              disabled={signIn.isLoading || signUp.isLoading}
+            >
+              {(signIn.isLoading || signUp.isLoading) && (
+                <Loader2 className="animate-spin" />
+              )}
               {mode === 'signin' ? 'Войти' : 'Зарегистрироваться'}
             </Button>
             <Button
@@ -33,6 +35,11 @@ const AuthPage = () => {
             </Button>
           </div>
         </AuthForm>
+        {(signIn.error || signUp.error) && (
+          <Typography className="text-red-600">
+            {signIn.error || signUp.error}
+          </Typography>
+        )}
       </div>
     </div>
   );
