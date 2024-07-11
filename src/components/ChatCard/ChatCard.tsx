@@ -1,20 +1,33 @@
+import { FC } from 'react';
 import { Avatar, AvatarFallback, Typography } from '../ui';
+import { useChatCard } from './useChatCard';
 
-const ChatCard = () => {
+type Props = {
+  id: number;
+  name: string;
+  isOnline: boolean;
+};
+
+const ChatCard: FC<Props> = ({ name, isOnline, id }) => {
+  const { data, error, isLoading } = useChatCard(id);
+
   return (
     <div className="flex p-2 gap-2 transition-all cursor-pointer hover:bg-slate-200 border-b-[1px] border-b-slate-300">
-      <Avatar className="w-16 h-16">
+      <Avatar className="w-16 h-16 relative overflow-visible">
         <AvatarFallback>User</AvatarFallback>
+        {isOnline && (
+          <div className="rounded-full absolute w-3 h-3 bg-green-600 border-[1px] border-green-900 right-1 bottom-2" />
+        )}
       </Avatar>
       <div className="overflow-hidden">
         <Typography variant="p" className="font-medium text-nowrap">
-          Name User
+          {name}
         </Typography>
         <Typography
           variant="p"
           className="overflow-hidden text-ellipsis text-nowrap"
         >
-          last message 123 1 123 23 1313 1 32
+          {data && data.at(-1)?.message}
         </Typography>
       </div>
     </div>

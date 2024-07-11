@@ -13,7 +13,6 @@ type ChatListProps = {
 
 const ChatList = ({ isLayoutOpen, changeIsOpenLayout }: ChatListProps) => {
   const { data, error, isLoading } = useChatList();
-
   return (
     <div>
       <div
@@ -40,14 +39,18 @@ const ChatList = ({ isLayoutOpen, changeIsOpenLayout }: ChatListProps) => {
           />
         </Button>
       </div>
-
-      <div>
-        <ChatCard />
-        <ChatCard />
-        <ChatCard />
-        <ChatCard />
-        <ChatCard />
-      </div>
+      {data && (
+        <div>
+          {data.map((chat) => (
+            <ChatCard
+              id={chat.idChat}
+              name={chat.chat.members[0].user.login}
+              key={chat.idChat}
+              isOnline={chat.chat.members[0].user.isOnline}
+            />
+          ))}
+        </div>
+      )}
     </div>
   );
 };
