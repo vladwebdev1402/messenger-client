@@ -1,17 +1,11 @@
-import { useQuery } from '@tanstack/react-query';
 import { useEffect, useRef, useState } from 'react';
 import { io } from 'socket.io-client';
 
-import { BASE_URL, LocalStorageManager } from '@/api';
+import { BASE_URL, LocalStorageManager, useGetUser } from '@/api';
 import { useAuthStore, useSocketStore } from '@/store';
-import { AuthService } from '@/services';
 
 export const useLayout = () => {
-  const { data, error, refetch } = useQuery({
-    refetchOnWindowFocus: false,
-    queryKey: ['user'],
-    queryFn: async () => await AuthService.getUser(),
-  });
+  const { data, error, refetch } = useGetUser();
 
   const [isOpen, setIsOpen] = useState(true);
   const socket = useSocketStore((state) => state.socket);

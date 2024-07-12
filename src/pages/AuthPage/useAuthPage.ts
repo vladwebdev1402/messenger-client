@@ -1,26 +1,20 @@
 import { useState } from 'react';
-import { useMutation } from '@tanstack/react-query';
 
-import { LocalStorageManager } from '@/api';
-import { AuthService } from '@/services';
+import { LocalStorageManager, useSignInMutate, useSignUpMutate } from '@/api';
 import { useAuthStore } from '@/store';
 
 export const useAuthPage = () => {
   const setIsAuth = useAuthStore((state) => state.setIsAuth);
   const [mode, setMode] = useState<'signin' | 'signup'>('signin');
 
-  const signInMutate = useMutation({
-    mutationFn: AuthService.SignIn,
+  const signUpMutate = useSignUpMutate({
+    onSuccess: () => setMode('signin'),
+  });
+
+  const signInMutate = useSignInMutate({
     onSuccess: (data) => {
       LocalStorageManager.setToken(data.token);
       setIsAuth(true);
-    },
-  });
-
-  const signUpMutate = useMutation({
-    mutationFn: AuthService.SignUp,
-    onSuccess: () => {
-      setMode('signin');
     },
   });
 

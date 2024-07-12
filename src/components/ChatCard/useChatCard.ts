@@ -1,15 +1,11 @@
 import { useEffect } from 'react';
-import { useQuery } from '@tanstack/react-query';
 
-import { MessageService } from '@/services';
 import { useAuthStore, useChatsStore, useSocketStore } from '@/store';
+import { useGetMessagesByChatId } from '@/api';
 
 export const useChatCard = (idChat: number) => {
-  const { data, error, isLoading } = useQuery({
-    refetchOnWindowFocus: false,
-    queryKey: ['message' + idChat],
-    queryFn: () => MessageService.getMessagesByChatId(idChat),
-  });
+  const { data, error, isLoading } = useGetMessagesByChatId(idChat);
+
   const setOnline = useChatsStore((state) => state.setOnline);
   const currentUser = useAuthStore((state) => state.user);
   const socket = useSocketStore((state) => state.socket);

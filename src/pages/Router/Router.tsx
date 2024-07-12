@@ -11,6 +11,7 @@ import { useAuthStore } from '@/store';
 import { Layout } from '../Layout';
 import { AuthPage } from '../AuthPage';
 import { MainPage } from '../MainPage';
+import { ChatPage } from '../ChatPage';
 
 const createRouter = (isAuth: boolean) =>
   createBrowserRouter(
@@ -20,6 +21,7 @@ const createRouter = (isAuth: boolean) =>
       ) : (
         <Route element={<Layout />}>
           <Route path={ROUTER_PATHS.main} element={<MainPage />} />
+          <Route path={ROUTER_PATHS.chat} element={<ChatPage />} />
         </Route>
       ),
     ),
