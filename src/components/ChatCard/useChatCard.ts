@@ -1,12 +1,48 @@
+import { useEffect } from 'react';
 import { useQuery } from '@tanstack/react-query';
 
 import { MessageService } from '@/services';
+import { useAuthStore, useChatsStore, useSocketStore } from '@/store';
 
 export const useChatCard = (idChat: number) => {
   const { data, error, isLoading } = useQuery({
+    refetchOnWindowFocus: false,
     queryKey: ['message' + idChat],
     queryFn: () => MessageService.getMessagesByChatId(idChat),
   });
+  const setOnline = useChatsStore((state) => state.setOnline);
+  const currentUser = useAuthStore((state) => state.user);
+  const socket = useSocketStore((state) => state.socket);
+
+  useEffect(() => {
+    if (socket && currentUser) {
+      const handleWindowBeforeUnload = () => {
+        socket.emit('chat/leave', { idChat, idUser: currentUser.id });
+      };
+
+      window.addEventListener('beforeunload', handleWindowBeforeUnload);
+
+      socket.emit('chat/join', { idChat, idUser: currentUser.id });
+
+      const handleConnect = (idUser: number) => {
+        setOnline(idUser, true);
+      };
+
+      const handleDisconnect = (idUser: number) => {
+        setOnline(idUser, false);
+      };
+
+      socket.on('chat/connect', handleConnect);
+      socket.on('chat/disconnect', handleDisconnect);
+
+      return () => {
+        window.removeEventListener('beforeunload', handleWindowBeforeUnload);
+        socket.emit('chat/leave', { idChat, idUser: currentUser.id });
+        socket.off('chat/connect', handleConnect);
+        socket.off('chat/disconnect', handleDisconnect);
+      };
+    }
+  }, [socket, currentUser]);
 
   return { isLoading, error, data };
 };

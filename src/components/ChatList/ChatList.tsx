@@ -3,7 +3,6 @@ import clsx from 'clsx';
 
 import { Button, Typography } from '../ui';
 import { ChatCard } from '../ChatCard';
-
 import { useChatList } from './useChatList';
 
 type ChatListProps = {
@@ -12,7 +11,8 @@ type ChatListProps = {
 };
 
 const ChatList = ({ isLayoutOpen, changeIsOpenLayout }: ChatListProps) => {
-  const { data, error, isLoading } = useChatList();
+  const { chats } = useChatList();
+
   return (
     <div>
       <div
@@ -39,15 +39,10 @@ const ChatList = ({ isLayoutOpen, changeIsOpenLayout }: ChatListProps) => {
           />
         </Button>
       </div>
-      {data && (
+      {chats && (
         <div>
-          {data.map((chat) => (
-            <ChatCard
-              id={chat.idChat}
-              name={chat.chat.members[0].user.login}
-              key={chat.idChat}
-              isOnline={chat.chat.members[0].user.isOnline}
-            />
+          {chats.map((chat) => (
+            <ChatCard key={chat.idChat} idChat={chat.idChat} user={chat.user} />
           ))}
         </div>
       )}

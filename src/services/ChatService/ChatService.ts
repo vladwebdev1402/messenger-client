@@ -4,7 +4,7 @@ import { AllChatsResponse } from './type';
 
 export class ChatService {
   static async getAllChats() {
-    const response = await apiInstance.get<AllChatsResponse[]>('chat');
+    const response = await apiInstance.get<AllChatsResponse>('chat');
     return response.data;
   }
 }

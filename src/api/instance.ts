@@ -6,9 +6,11 @@ export const BASE_URL = 'http://localhost:5000';
 
 export const apiInstance = axios.create({
   baseURL: BASE_URL,
-  headers: {
-    Authorization: `Bearer ${LocalStorageManager.getToken()}`,
-  },
+});
+
+apiInstance.interceptors.request.use((req) => {
+  req.headers.Authorization = `Bearer ${LocalStorageManager.getToken()}`;
+  return req;
 });
 
 apiInstance.interceptors.response.use(

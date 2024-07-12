@@ -1,8 +1,9 @@
+import { useState } from 'react';
+import { useMutation } from '@tanstack/react-query';
+
 import { LocalStorageManager } from '@/api';
 import { AuthService } from '@/services';
 import { useAuthStore } from '@/store';
-import { useMutation } from '@tanstack/react-query';
-import { useState } from 'react';
 
 export const useAuthPage = () => {
   const setIsAuth = useAuthStore((state) => state.setIsAuth);

@@ -16,9 +16,7 @@ const createRouter = (isAuth: boolean) =>
   createBrowserRouter(
     createRoutesFromElements(
       !isAuth ? (
-        <Route element={<Layout />}>
-          <Route path={ROUTER_PATHS.main} element={<AuthPage />} />
-        </Route>
+        <Route path={ROUTER_PATHS.main} element={<AuthPage />} />
       ) : (
         <Route element={<Layout />}>
           <Route path={ROUTER_PATHS.main} element={<MainPage />} />
