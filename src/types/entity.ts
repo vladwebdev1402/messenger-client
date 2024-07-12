@@ -18,6 +18,7 @@ export type ChatMember = {
 export type Message = {
   id: number;
   message: string;
+  user: User;
   idUser: number;
   idChat: number;
   createdAt: Date;

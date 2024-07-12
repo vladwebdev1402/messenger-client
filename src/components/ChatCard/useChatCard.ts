@@ -1,14 +1,18 @@
+import { useNavigate } from 'react-router-dom';
 import { useEffect } from 'react';
 
 import { useAuthStore, useChatsStore, useSocketStore } from '@/store';
 import { useGetMessagesByChatId } from '@/api';
 
 export const useChatCard = (idChat: number) => {
+  const navigate = useNavigate();
   const { data, error, isLoading } = useGetMessagesByChatId(idChat);
 
   const setOnline = useChatsStore((state) => state.setOnline);
   const currentUser = useAuthStore((state) => state.user);
   const socket = useSocketStore((state) => state.socket);
+
+  const handleChatClick = () => navigate('/' + idChat);
 
   useEffect(() => {
     if (socket && currentUser) {
@@ -40,5 +44,5 @@ export const useChatCard = (idChat: number) => {
     }
   }, [socket, currentUser]);
 
-  return { isLoading, error, data };
+  return { isLoading, error, data, handleChatClick };
 };

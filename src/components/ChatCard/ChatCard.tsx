@@ -11,10 +11,13 @@ type Props = {
 };
 
 const ChatCard: FC<Props> = ({ idChat, user }) => {
-  const { data } = useChatCard(idChat);
+  const { data, handleChatClick } = useChatCard(idChat);
 
   return (
-    <div className="flex p-2 gap-2 transition-all cursor-pointer hover:bg-slate-200 border-b-[1px] border-b-slate-300">
+    <div
+      className="flex p-2 gap-2 transition-all cursor-pointer hover:bg-slate-200 border-b-[1px] border-b-slate-300"
+      onClick={handleChatClick}
+    >
       <Avatar className="w-16 h-16 relative overflow-visible">
         <AvatarFallback>{user.id}</AvatarFallback>
         {user.isOnline && (
