@@ -21,5 +21,5 @@ export type Message = {
   user: User;
   idUser: number;
   idChat: number;
-  createdAt: Date;
+  createdAt: string;
 };

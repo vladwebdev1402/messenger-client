@@ -9,7 +9,7 @@ const Layout = () => {
   const { isOpen, changeIsOpen } = useLayout();
 
   return (
-    <div className="flex h-screen">
+    <div className="flex h-screen overflow-hidden">
       <aside
         className={clsx('w-full border-r border-r-slate-200 transition-all', {
           'max-w-[320px]': isOpen,

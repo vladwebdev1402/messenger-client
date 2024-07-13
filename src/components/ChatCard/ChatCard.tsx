@@ -1,6 +1,7 @@
 import { FC } from 'react';
 
 import { User } from '@/types';
+import { getTime } from '@/helpers';
 
 import { Avatar, AvatarFallback, Typography } from '../ui';
 import { useChatCard } from './useChatCard';
@@ -24,15 +25,22 @@ const ChatCard: FC<Props> = ({ idChat, user }) => {
           <div className="rounded-full absolute w-3 h-3 bg-green-600 border-[1px] border-green-900 right-1 bottom-2" />
         )}
       </Avatar>
-      <div className="overflow-hidden">
+      <div className="overflow-hidden w-full">
         <Typography variant="p" className="font-medium text-nowrap">
           {user.login}
         </Typography>
         <Typography
           variant="p"
-          className="overflow-hidden text-ellipsis text-nowrap"
+          className="overflow-hidden text-ellipsis text-nowrap mt-2"
         >
-          {data && data.at(-1)?.message}
+          {data && (
+            <>
+              {data.at(-1)?.message}
+              <span className="text-xs float-right pl-2 text-end mt-3 font-medium">
+                {getTime(data.at(-1)?.createdAt || '')}
+              </span>
+            </>
+          )}
         </Typography>
       </div>
     </div>

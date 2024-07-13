@@ -13,7 +13,7 @@ export const useChatList = () => {
     if (data) {
       setChats(data);
     }
-  }, [data]);
+  }, [data, setChats]);
 
   return { isLoading, error, chats };
 };

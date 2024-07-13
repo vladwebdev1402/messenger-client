@@ -6,7 +6,7 @@ import { useGetMessagesByChatId } from '@/api';
 
 export const useChatCard = (idChat: number) => {
   const navigate = useNavigate();
-  const { data, error, isLoading } = useGetMessagesByChatId(idChat);
+  const { data, error, isLoading } = useGetMessagesByChatId(idChat, 1);
 
   const setOnline = useChatsStore((state) => state.setOnline);
   const currentUser = useAuthStore((state) => state.user);
@@ -42,7 +42,7 @@ export const useChatCard = (idChat: number) => {
         socket.off('chat/disconnect', handleDisconnect);
       };
     }
-  }, [socket, currentUser]);
+  }, [socket, currentUser, idChat, setOnline]);
 
   return { isLoading, error, data, handleChatClick };
 };
