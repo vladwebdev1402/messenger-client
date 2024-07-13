@@ -6,3 +6,4 @@ export * from './password-input';
 export * from './avatar';
 export * from './card';
 export * from './textarea';
+export * from './skeleton';

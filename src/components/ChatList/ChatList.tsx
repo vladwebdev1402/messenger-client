@@ -4,6 +4,7 @@ import clsx from 'clsx';
 import { Button, Typography } from '../ui';
 import { ChatCard } from '../ChatCard';
 import { useChatList } from './useChatList';
+import { ChatListSkeleton } from './ChatListSkeleton';
 
 type ChatListProps = {
   isLayoutOpen: boolean;
@@ -11,7 +12,7 @@ type ChatListProps = {
 };
 
 const ChatList = ({ isLayoutOpen, changeIsOpenLayout }: ChatListProps) => {
-  const { chats } = useChatList();
+  const { chats, isLoading } = useChatList();
 
   return (
     <div>
@@ -39,6 +40,8 @@ const ChatList = ({ isLayoutOpen, changeIsOpenLayout }: ChatListProps) => {
           />
         </Button>
       </div>
+      {isLoading && <ChatListSkeleton />}
+
       {chats && (
         <div>
           {chats.map((chat) => (

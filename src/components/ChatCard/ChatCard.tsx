@@ -29,14 +29,13 @@ const ChatCard: FC<Props> = ({ idChat, user }) => {
         <Typography variant="p" className="font-medium text-nowrap">
           {user.login}
         </Typography>
-        <Typography
-          variant="p"
-          className="overflow-hidden text-ellipsis text-nowrap mt-2"
-        >
+        <Typography variant="p" className="mt-2 flex gap-2 justify-between">
           {data && (
             <>
-              {data.at(-1)?.message}
-              <span className="text-xs float-right pl-2 text-end mt-3 font-medium">
+              <div className="overflow-hidden w-full text-ellipsis text-nowrap">
+                {data.at(-1)?.message}
+              </div>
+              <span className="text-xs pl-2 text-end mt-3 font-medium">
                 {getTime(data.at(-1)?.createdAt || '')}
               </span>
             </>
