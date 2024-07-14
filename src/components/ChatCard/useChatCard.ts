@@ -44,5 +44,5 @@ export const useChatCard = (idChat: number) => {
     }
   }, [socket, currentUser, idChat, setOnline]);
 
-  return { isLoading, error, data, handleChatClick };
+  return { isLoading, error, data: data?.messages, handleChatClick };
 };
