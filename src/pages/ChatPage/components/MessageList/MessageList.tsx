@@ -9,13 +9,14 @@ type Props = {
 };
 
 const MessageList: FC<Props> = ({ listRef }) => {
-  const { sortedData, user } = useMessageList(listRef);
+  const { sortedData, user, handleAddLength } = useMessageList(listRef);
 
   if (user)
     return (
       <div
-        className="flex flex-col gap-3 p-3 overflow-auto h-[calc(100dvh-72px-96px)]"
+        className="flex flex-col gap-3 p-3 overflow-auto h-[calc(100dvh-72px-96px)] scroll"
         ref={listRef}
+        onClick={handleAddLength}
       >
         {Object.keys(sortedData).map((date) => (
           <div className="flex flex-col gap-3 p-3" key={date}>

@@ -43,7 +43,7 @@ const ChatList = ({ isLayoutOpen, changeIsOpenLayout }: ChatListProps) => {
       {isLoading && <ChatListSkeleton />}
 
       {chats && (
-        <div>
+        <div className="overflow-auto scroll max-h-[calc(100dvh-76px)]">
           {chats.map((chat) => (
             <ChatCard key={chat.idChat} idChat={chat.idChat} user={chat.user} />
           ))}

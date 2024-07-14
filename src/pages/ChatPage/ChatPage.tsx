@@ -1,4 +1,5 @@
 import { useNavigate, useParams } from 'react-router-dom';
+import { useRef } from 'react';
 
 import { Button } from '@/components';
 import { ROUTER_PATHS } from '@/constants';
@@ -6,7 +7,6 @@ import { useSocketStore } from '@/store';
 import { LocalStorageManager } from '@/api';
 
 import { MessageForm, MessageList } from './components';
-import { useRef } from 'react';
 
 const ChatPage = () => {
   const navigate = useNavigate();
@@ -16,7 +16,6 @@ const ChatPage = () => {
 
   const handleSubmitMessage = (data: { message: string }) => {
     if (socket && id) {
-      listRef.current?.scrollTo({ top: listRef.current.scrollHeight });
       socket.emit('message/send', {
         token: `Bearer ${LocalStorageManager.getToken()}`,
         message: data.message,
