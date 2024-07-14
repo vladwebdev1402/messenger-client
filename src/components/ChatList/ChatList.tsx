@@ -17,7 +17,7 @@ const ChatList = ({ isLayoutOpen, changeIsOpenLayout }: ChatListProps) => {
   return (
     <div>
       <div
-        className={clsx('pl-4 pt-3 pb-5 pr-4 flex items-center bg-slate-50', {
+        className={clsx('pl-4 pt-3 pb-5 pr-4 flex items-center bg-border', {
           'justify-between': isLayoutOpen,
           'justify-end': !isLayoutOpen,
         })}

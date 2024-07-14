@@ -8,7 +8,11 @@ export const apiInstance = axios.create({
   baseURL: BASE_URL,
 });
 
-apiInstance.interceptors.request.use((req) => {
+apiInstance.interceptors.request.use(async (req) => {
+  await new Promise((resolve) => {
+    setTimeout(resolve, 1000);
+  });
+
   req.headers.Authorization = `Bearer ${LocalStorageManager.getToken()}`;
   return req;
 });

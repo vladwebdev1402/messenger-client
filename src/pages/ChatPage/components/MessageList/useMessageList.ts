@@ -1,4 +1,4 @@
-import { RefObject, useEffect, useRef } from 'react';
+import { RefObject, useEffect, useLayoutEffect, useRef } from 'react';
 import { useParams } from 'react-router-dom';
 import { useQueryClient } from '@tanstack/react-query';
 
@@ -33,9 +33,9 @@ export const useMessageList = (listRef: RefObject<HTMLDivElement>) => {
   const sortedData = sortByDate(getMessagesFromPages);
   const handleAddLength = async () => {
     listRef.current?.scrollTo({
-      top: 1000,
+      top: 100,
     });
-    await fetchNextPage();
+    setTimeout(() => fetchNextPage(), 150);
   };
 
   useEffect(() => {
@@ -71,9 +71,9 @@ export const useMessageList = (listRef: RefObject<HTMLDivElement>) => {
     }
   }, [listRef, sortedData, isScrolled, id]);
 
-  useEffect(() => {
-    isScrolled.current = false;
-  }, [id, isScrolled]);
+  useLayoutEffect(() => {
+    if (listRef.current) listRef.current.scrollTo({ top: 1000000 });
+  }, [id, listRef, sortedData]);
 
   return {
     user,

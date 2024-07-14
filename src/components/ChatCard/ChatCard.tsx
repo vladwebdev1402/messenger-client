@@ -16,7 +16,7 @@ const ChatCard: FC<Props> = ({ idChat, user }) => {
 
   return (
     <div
-      className="flex p-2 gap-2 transition-all cursor-pointer hover:bg-slate-200 border-b-[1px] border-b-slate-300"
+      className="flex p-2 gap-2 transition-all cursor-pointer hover:bg-slate-300 dark:hover:bg-primary-foreground border-b-[1px] border-border"
       onClick={handleChatClick}
     >
       <Avatar className="w-16 h-16 relative overflow-visible">

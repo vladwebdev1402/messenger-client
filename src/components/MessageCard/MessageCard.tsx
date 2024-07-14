@@ -22,9 +22,9 @@ const MessageCard: FC<Props> = ({ message, isMyMessage }) => {
         {isMyMessage ? 'Вы' : message.user.login}
       </span>
       <div className="p-0">
-        <CardDescription>
+        <CardDescription className="text-primary">
           {message.message}
-          <span className="text-xs float-right pl-2 text-end mt-2 font-medium">
+          <span className="text-xs float-right pl-2 text-end mt-2 font-medium text-muted-foreground">
             {getTime(message.createdAt)}
           </span>
         </CardDescription>

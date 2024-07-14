@@ -11,7 +11,7 @@ const Layout = () => {
   return (
     <div className="flex h-screen overflow-hidden">
       <aside
-        className={clsx('w-full border-r border-r-slate-200 transition-all', {
+        className={clsx('w-full border-r-2 border-r-border transition-all', {
           'max-w-[320px]': isOpen,
           ' max-w-[80px]': !isOpen,
         })}

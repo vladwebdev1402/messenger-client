@@ -26,7 +26,7 @@ const MessageList: FC<Props> = ({ listRef }) => {
         />
         {Object.keys(sortedData).map((date) => (
           <div className="flex flex-col gap-3 p-3" key={date}>
-            <div className="self-center bg-primary text-sm rounded p-1 text-primary-foreground">
+            <div className="self-center text-sm rounded p-1 bg-border dark:bg-primary-foreground">
               {date}
             </div>
             {sortedData[date].map((msg) => (
