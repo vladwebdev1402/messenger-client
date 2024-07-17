@@ -4,7 +4,6 @@ import { useQueryClient } from '@tanstack/react-query';
 
 import {
   updateInfinityMessagesCache,
-  updateMessagesCache,
   useGetInfinityMessagesByChatId,
 } from '@/api';
 import { useAuthStore, useSocketStore } from '@/store';
@@ -40,8 +39,6 @@ export const useMessageList = (listRef: RefObject<HTMLDivElement>) => {
   useEffect(() => {
     const handleMessageReceive = (message: Message) => {
       updateInfinityMessagesCache(Number(id), client, message);
-
-      updateMessagesCache(Number(id), client, message);
 
       if (user && user.id === message.idUser) {
         setTimeout(() => {

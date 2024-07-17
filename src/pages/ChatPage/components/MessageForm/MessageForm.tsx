@@ -1,4 +1,4 @@
-import { FC } from 'react';
+import { FC, KeyboardEvent } from 'react';
 import { z } from 'zod';
 import { Send } from 'lucide-react';
 import { useForm } from 'react-hook-form';
@@ -26,6 +26,17 @@ const MessageForm: FC<Props> = ({ onSubmit }) => {
     resolver: zodResolver(messageScheme),
   });
 
+  const handleKeyPress = (e: KeyboardEvent<HTMLFormElement>) => {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      const data = form.getValues();
+
+      if (data.message.length > 1) {
+        handleSubmitMessage(data);
+      }
+    }
+  };
+
   const handleSubmitMessage = (data: { message: string }) => {
     form.reset({
       message: '',
@@ -38,6 +49,7 @@ const MessageForm: FC<Props> = ({ onSubmit }) => {
       <form
         onSubmit={form.handleSubmit(handleSubmitMessage)}
         className="flex gap-2 w-full p-2"
+        onKeyDown={handleKeyPress}
       >
         <FormField
           name="message"
@@ -49,13 +61,16 @@ const MessageForm: FC<Props> = ({ onSubmit }) => {
                   placeholder="Введите сообщение..."
                   {...field}
                   autoComplete="off"
-                  className="resize-none h-[70px]"
+                  className="resize-none h-[70px] border-0 focus-visible:ring-0"
                 />
               </FormControl>
             </FormItem>
           )}
         />
-        <Button variant="outline">
+        <Button
+          variant="outline"
+          className="block h-full border-none self-center"
+        >
           <Send />
         </Button>
       </form>

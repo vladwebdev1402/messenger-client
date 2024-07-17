@@ -5,6 +5,7 @@ import { getTime } from '@/helpers';
 
 import { Avatar, AvatarFallback, Typography } from '../ui';
 import { useChatCard } from './useChatCard';
+import { ChatCardSkeleton } from './ChatCardSkeleton';
 
 type Props = {
   idChat: number;
@@ -12,7 +13,9 @@ type Props = {
 };
 
 const ChatCard: FC<Props> = ({ idChat, user }) => {
-  const { data, handleChatClick } = useChatCard(idChat);
+  const { isLoading, data, handleChatClick } = useChatCard(idChat);
+
+  if (isLoading) return <ChatCardSkeleton />;
 
   return (
     <div
