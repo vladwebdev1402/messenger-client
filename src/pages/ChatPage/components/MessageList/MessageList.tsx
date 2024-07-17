@@ -3,13 +3,27 @@ import { FC, RefObject } from 'react';
 import { InfinityScroll, MessageCard } from '@/components';
 
 import { useMessageList } from './useMessageList';
+import { MessageListSkeleton } from './MessageListSkeleton';
+import clsx from 'clsx';
 
 type Props = {
   listRef: RefObject<HTMLDivElement>;
 };
 
 const MessageList: FC<Props> = ({ listRef }) => {
-  const { sortedData, user, cursor, handleAddLength } = useMessageList(listRef);
+  const { sortedData, user, cursor, isLoading, isFetching, handleAddLength } =
+    useMessageList(listRef);
+
+  if (isLoading) {
+    return (
+      <div className="flex flex-col gap-3 p-3 overflow-auto h-[calc(100dvh-72px-96px)] scroll relative">
+        <div className="flex flex-col gap-3 p-3">
+          <MessageListSkeleton />
+          <MessageListSkeleton />
+        </div>
+      </div>
+    );
+  }
 
   if (user)
     return (
@@ -18,11 +32,17 @@ const MessageList: FC<Props> = ({ listRef }) => {
         ref={listRef}
       >
         <InfinityScroll
-          isLoading={false}
+          isLoading={isFetching}
           isStopScroll={Object.keys(sortedData).length === 0 || cursor === null}
-          loader={<></>}
+          loader={
+            <div className="flex flex-col gap-3 p-3">
+              <MessageListSkeleton />
+            </div>
+          }
           onObserve={handleAddLength}
-          className="absolute top-0 left-0 w-full"
+          className={clsx('top-[250px] left-0 w-full', {
+            absolute: !isFetching,
+          })}
         />
         {Object.keys(sortedData).map((date) => (
           <div className="flex flex-col gap-3 p-3" key={date}>

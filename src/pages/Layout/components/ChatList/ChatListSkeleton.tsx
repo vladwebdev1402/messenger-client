@@ -1,4 +1,4 @@
-import { ChatCardSkeleton } from '../ChatCard';
+import { ChatCardSkeleton } from '../../../../components/ChatCard';
 
 const ChatListSkeleton = () => {
   return (

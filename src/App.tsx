@@ -7,7 +7,7 @@ const queryClient = new QueryClient();
 
 function App() {
   return (
-    <ThemeProvider defaultTheme="dark">
+    <ThemeProvider defaultTheme="light">
       <QueryClientProvider client={queryClient}>
         <Router />
       </QueryClientProvider>

@@ -19,9 +19,8 @@ export const useMessageList = (listRef: RefObject<HTMLDivElement>) => {
   const isScrolled = useRef(false);
   const client = useQueryClient();
 
-  const { data, fetchNextPage, isFetching } = useGetInfinityMessagesByChatId(
-    Number(id),
-  );
+  const { data, fetchNextPage, isLoading, isFetching } =
+    useGetInfinityMessagesByChatId(Number(id));
 
   const getMessagesFromPages = data
     ? data.pages.reduce(
@@ -33,7 +32,7 @@ export const useMessageList = (listRef: RefObject<HTMLDivElement>) => {
   const sortedData = sortByDate(getMessagesFromPages);
   const handleAddLength = async () => {
     listRef.current?.scrollTo({
-      top: 100,
+      top: 900,
     });
     setTimeout(() => fetchNextPage(), 150);
   };
@@ -72,14 +71,22 @@ export const useMessageList = (listRef: RefObject<HTMLDivElement>) => {
   }, [listRef, sortedData, isScrolled, id]);
 
   useLayoutEffect(() => {
-    if (listRef.current) listRef.current.scrollTo({ top: 1000000 });
+    if (listRef.current && !isScrolled.current) {
+      isScrolled.current = true;
+      listRef.current.scrollTo({ top: 1000000 });
+    }
   }, [id, listRef, sortedData]);
+
+  useEffect(() => {
+    isScrolled.current = false;
+  }, [id]);
 
   return {
     user,
     sortedData,
     cursor: data?.pages.at(-1)?.nextCursor || null,
     isFetching,
+    isLoading,
     handleAddLength,
   };
 };

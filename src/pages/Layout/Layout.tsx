@@ -1,9 +1,8 @@
 import { Outlet } from 'react-router-dom';
 import clsx from 'clsx';
 
-import { ChatList } from '@/components';
-
 import { useLayout } from './useLayout';
+import { ChatList } from './components';
 
 const Layout = () => {
   const { isOpen, changeIsOpen } = useLayout();

@@ -14,7 +14,7 @@ type Props = {
 const MessageCard: FC<Props> = ({ message, isMyMessage }) => {
   return (
     <Card
-      className={clsx('self-start max-w-160 p-2', {
+      className={clsx('self-start max-w-[560px] p-2', {
         'bg-secondary': isMyMessage,
       })}
     >
@@ -22,7 +22,7 @@ const MessageCard: FC<Props> = ({ message, isMyMessage }) => {
         {isMyMessage ? 'Вы' : message.user.login}
       </span>
       <div className="p-0">
-        <CardDescription className="text-primary">
+        <CardDescription className="text-primary break-words">
           {message.message}
           <span className="text-xs float-right pl-2 text-end mt-2 font-medium text-muted-foreground">
             {getTime(message.createdAt)}

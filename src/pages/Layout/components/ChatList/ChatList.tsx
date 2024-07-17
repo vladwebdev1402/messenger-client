@@ -1,8 +1,8 @@
 import { ArrowLeftToLine } from 'lucide-react';
 import clsx from 'clsx';
 
-import { Button, Typography } from '../ui';
-import { ChatCard } from '../ChatCard';
+import { Button, ChatCard, Typography } from '@/components';
+
 import { useChatList } from './useChatList';
 import { ChatListSkeleton } from './ChatListSkeleton';
 

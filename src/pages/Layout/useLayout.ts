@@ -25,7 +25,7 @@ export const useLayout = () => {
       setUser(null);
       setIsAuth(false);
     }
-  }, [data, error]);
+  }, [data, error, setIsAuth, setUser]);
 
   useEffect(() => {
     if (isAuth && !socket && !socketCreatedRef.current) {
@@ -42,7 +42,7 @@ export const useLayout = () => {
     return () => {
       if (socket) socket.disconnect();
     };
-  }, [isAuth, socket]);
+  }, [isAuth, socket, refetch, setSocket]);
 
   return {
     isOpen,
