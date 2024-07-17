@@ -19,7 +19,7 @@ const ChatList = ({ isLayoutOpen, changeIsOpenLayout }: ChatListProps) => {
       <div
         className={clsx('pl-4 pt-3 pb-5 pr-4 flex items-center bg-border', {
           'justify-between': isLayoutOpen,
-          'justify-end': !isLayoutOpen,
+          'justify-end opacity-0 sm:opacity-100': !isLayoutOpen,
         })}
       >
         {isLayoutOpen && (
@@ -29,7 +29,9 @@ const ChatList = ({ isLayoutOpen, changeIsOpenLayout }: ChatListProps) => {
         )}
         <Button
           variant="outline"
-          className="p-2 w-10 h-10"
+          className={clsx('p-2 w-10 h-10', {
+            'hidden sm:block': !isLayoutOpen,
+          })}
           onClick={changeIsOpenLayout}
         >
           <ArrowLeftToLine

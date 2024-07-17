@@ -25,7 +25,7 @@ const ChatPage = () => {
   };
 
   return (
-    <div className="w-full">
+    <div className="w-full h-full">
       <div className="pt-3 pb-5 pl-2 pr-2 bg-border w-full">
         <Button onClick={() => navigate(ROUTER_PATHS.main)}>Закрыть</Button>
       </div>
