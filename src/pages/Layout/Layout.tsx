@@ -19,7 +19,7 @@ const Layout = () => {
       </aside>
       <main
         className={clsx('w-full relative sm:opacity-100', {
-          'max-w-0 -z-10 opacity-0 sm:max-w-full': isOpen,
+          'max-w-0 -z-10 opacity-0 sm:max-w-full sm:z-0': isOpen,
         })}
       >
         <Outlet />
