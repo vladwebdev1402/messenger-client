@@ -4,7 +4,7 @@ import { useEffect } from 'react';
 import { useAuthStore, useChatsStore, useSocketStore } from '@/store';
 import { useGetMessagesByChatId } from '@/api';
 
-export const useChatCard = (idChat: number) => {
+export const useChatCard = (idChat: number | null) => {
   const navigate = useNavigate();
   const { data, error, isLoading } = useGetMessagesByChatId(idChat, 1);
 
@@ -15,7 +15,7 @@ export const useChatCard = (idChat: number) => {
   const handleChatClick = () => navigate('/' + idChat);
 
   useEffect(() => {
-    if (socket && currentUser) {
+    if (socket && currentUser && idChat !== null) {
       const handleWindowBeforeUnload = () => {
         socket.emit('chat/leave', { idChat, idUser: currentUser.id });
       };
@@ -36,10 +36,12 @@ export const useChatCard = (idChat: number) => {
       socket.on('chat/disconnect', handleDisconnect);
 
       return () => {
-        window.removeEventListener('beforeunload', handleWindowBeforeUnload);
-        socket.emit('chat/leave', { idChat, idUser: currentUser.id });
-        socket.off('chat/connect', handleConnect);
-        socket.off('chat/disconnect', handleDisconnect);
+        if (idChat !== null) {
+          window.removeEventListener('beforeunload', handleWindowBeforeUnload);
+          socket.emit('chat/leave', { idChat, idUser: currentUser.id });
+          socket.off('chat/connect', handleConnect);
+          socket.off('chat/disconnect', handleDisconnect);
+        }
       };
     }
   }, [socket, currentUser, idChat, setOnline]);

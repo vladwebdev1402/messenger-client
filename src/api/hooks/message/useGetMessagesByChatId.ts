@@ -3,16 +3,18 @@ import { QueryClient, useInfiniteQuery, useQuery } from '@tanstack/react-query';
 import { getMessagesResponse, MessageService } from '@/api/requests';
 import { Message } from '@/types';
 
-export const useGetMessagesByChatId = (idChat: number, length = 20) =>
+export const useGetMessagesByChatId = (idChat: number | null, length = 20) =>
   useQuery<getMessagesResponse>({
     refetchOnWindowFocus: false,
+    enabled: idChat !== null,
     queryKey: ['message', idChat, length],
     queryFn: async () =>
-      await MessageService.getMessagesByChatId(idChat, length),
+      await MessageService.getMessagesByChatId(idChat || 0, length),
   });
 
 export const useGetInfinityMessagesByChatId = (idChat: number) =>
   useInfiniteQuery({
+    refetchOnWindowFocus: false,
     queryKey: ['message', idChat],
     initialPageParam: 20,
     queryFn: ({ pageParam }) =>

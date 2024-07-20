@@ -8,7 +8,7 @@ import { useChatCard } from './useChatCard';
 import { ChatCardSkeleton } from './ChatCardSkeleton';
 
 type Props = {
-  idChat: number;
+  idChat: number | null;
   user: User;
 };
 
@@ -32,18 +32,20 @@ const ChatCard: FC<Props> = ({ idChat, user }) => {
         <Typography variant="p" className="font-medium text-nowrap">
           {user.login}
         </Typography>
-        <Typography variant="p" className="mt-2 flex gap-2 justify-between">
-          {data && (
-            <>
-              <div className="overflow-hidden w-full text-ellipsis text-nowrap">
-                {data.at(-1)?.message}
-              </div>
-              <span className="text-xs pl-2 text-end mt-3 font-medium">
-                {getTime(data.at(-1)?.createdAt || '')}
-              </span>
-            </>
-          )}
-        </Typography>
+        {idChat !== null && (
+          <Typography variant="p" className="mt-2 flex gap-2 justify-between">
+            {data && (
+              <>
+                <div className="overflow-hidden w-full text-ellipsis text-nowrap">
+                  {data.at(-1)?.message}
+                </div>
+                <span className="text-xs pl-2 text-end mt-3 font-medium">
+                  {getTime(data.at(-1)?.createdAt || '')}
+                </span>
+              </>
+            )}
+          </Typography>
+        )}
       </div>
     </div>
   );
