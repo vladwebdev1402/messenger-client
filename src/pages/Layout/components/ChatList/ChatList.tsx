@@ -2,10 +2,11 @@ import { ChangeEvent } from 'react';
 import { ArrowLeftToLine } from 'lucide-react';
 import clsx from 'clsx';
 
-import { Button, ChatCard, Input, Typography } from '@/components';
+import { Button, ChatCard, Input } from '@/components';
 
 import { useChatList } from './useChatList';
 import { ChatListSkeleton } from './ChatListSkeleton';
+import { SearchedChatsList } from '../SearchedChatsList';
 
 type ChatListProps = {
   isLayoutOpen: boolean;
@@ -13,14 +14,7 @@ type ChatListProps = {
 };
 
 const ChatList = ({ isLayoutOpen, changeIsOpenLayout }: ChatListProps) => {
-  const {
-    chats,
-    isLoading,
-    debounceSearch,
-    searchData,
-    searchLogin,
-    searchFetching,
-  } = useChatList();
+  const { chats, isLoading, debounceSearch, searchLogin } = useChatList();
 
   const handleSearchChange = (e: ChangeEvent<HTMLInputElement>) => {
     debounceSearch(e.target.value);
@@ -56,21 +50,8 @@ const ChatList = ({ isLayoutOpen, changeIsOpenLayout }: ChatListProps) => {
           />
         </Button>
       </div>
-      {searchLogin !== '' && (
-        <div>
-          {searchFetching && <ChatListSkeleton />}
-          {!searchFetching &&
-            searchData &&
-            searchData.map((user) => (
-              <ChatCard key={user.id} idChat={null} user={user} />
-            ))}
-          {!searchFetching && searchData?.length === 0 && (
-            <Typography className="mt-4 text-center">
-              Ничего не найдено
-            </Typography>
-          )}
-        </div>
-      )}
+
+      <SearchedChatsList searchLogin={searchLogin} />
       {isLoading && <ChatListSkeleton />}
 
       {chats && searchLogin === '' && (

@@ -2,11 +2,7 @@ import { useEffect, useState } from 'react';
 import { useQueryClient } from '@tanstack/react-query';
 
 import { useChatsStore, useSocketStore } from '@/store';
-import {
-  updateMessagesCache,
-  useGetChats,
-  useGetSearchUsersByLogin,
-} from '@/api';
+import { updateMessagesCache, useGetChats } from '@/api';
 import { Message } from '@/types';
 import { useDebounce } from '@/hooks';
 
@@ -18,8 +14,6 @@ export const useChatList = () => {
   const client = useQueryClient();
 
   const { isLoading, error, data } = useGetChats();
-  const { isFetching: searchFetching, data: searchData } =
-    useGetSearchUsersByLogin(searchLogin);
 
   const handleSearch = (value: string) => setSearchLogin(value);
 
@@ -49,9 +43,7 @@ export const useChatList = () => {
     isLoading,
     error,
     chats,
-    searchData,
     searchLogin,
-    searchFetching,
     debounceSearch,
   };
 };
