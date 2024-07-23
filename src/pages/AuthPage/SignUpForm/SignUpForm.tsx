@@ -15,12 +15,10 @@ const SignUpForm: FC<AuthProps> = ({
 }) => {
   return (
     <div
-      className={clsx(
-        'w-full duration-500 pl-4 pr-4 absolute translate-x-full scale-50',
-        {
-          'translate-x-0 scale-100': currentMode === 'signup',
-        },
-      )}
+      className={clsx('w-full duration-500 pl-4 pr-4 left-0 top-0 absolute ', {
+        'translate-x-full scale-50': currentMode !== 'signup',
+        'translate-x-0 scale-100': currentMode === 'signup',
+      })}
     >
       <Typography variant="h2" className="text-center">
         Регистрация

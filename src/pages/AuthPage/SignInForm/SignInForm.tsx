@@ -15,12 +15,10 @@ const SignInForm: FC<AuthProps> = ({
 }) => {
   return (
     <div
-      className={clsx(
-        'w-full duration-500 pl-4 pr-4 absolute translate-x-[-100%] scale-50',
-        {
-          'translate-x-0 scale-100': currentMode === 'signin',
-        },
-      )}
+      className={clsx('w-full duration-500 pl-4 pr-4 left-0 top-0 absolute', {
+        'translate-x-[-100%] scale-50': currentMode !== 'signin',
+        'scale-100 translate-x-0': currentMode === 'signin',
+      })}
     >
       <Typography variant="h2" className="text-center">
         Авторизация
