@@ -16,9 +16,13 @@ export const useGetInfinityMessagesByChatId = (idChat: number) =>
   useInfiniteQuery({
     refetchOnWindowFocus: false,
     queryKey: ['message', idChat],
-    initialPageParam: 20,
+    initialPageParam: { page: 1, length: 80 },
     queryFn: ({ pageParam }) =>
-      MessageService.getMessagesByChatId(idChat, pageParam),
+      MessageService.getMessagesByChatId(
+        idChat,
+        pageParam.length,
+        pageParam.page,
+      ),
     getNextPageParam: (lastPage) => lastPage.nextCursor,
   });
 

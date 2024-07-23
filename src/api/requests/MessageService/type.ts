@@ -2,5 +2,8 @@ import { Message } from '@/types';
 
 export type getMessagesResponse = {
   messages: Message[];
-  nextCursor: number | null;
+  nextCursor: {
+    page: number;
+    length: number;
+  } | null;
 };

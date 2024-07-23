@@ -68,15 +68,10 @@ export const useMessageList = (listRef: RefObject<HTMLDivElement>) => {
   }, [listRef, sortedData, isScrolled, id]);
 
   useLayoutEffect(() => {
-    if (listRef.current && !isScrolled.current) {
-      isScrolled.current = true;
+    if (listRef.current) {
       listRef.current.scrollTo({ top: 1000000 });
     }
-  }, [id, listRef, sortedData]);
-
-  useEffect(() => {
-    isScrolled.current = false;
-  }, [id]);
+  }, [id, listRef]);
 
   return {
     user,
