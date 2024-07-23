@@ -1,46 +1,26 @@
-import { Loader2 } from 'lucide-react';
-
-import { AuthForm, Button, Typography } from '@/components';
+import { SignInForm } from './SignInForm';
+import { SignUpForm } from './SignUpForm';
 import { useAuthPage } from './useAuthPage';
 
 const AuthPage = () => {
-  const { mode, signIn, signUp, handleModeButtonClick, onSumbit } =
-    useAuthPage();
+  const { mode, signIn, signUp, changeMode, onSubmit } = useAuthPage();
 
   return (
-    <div className="container max-w-md mt-24">
-      <Typography variant="h2" className="text-center">
-        {mode === 'signin' ? 'Авторизация' : 'Регистрация'}
-      </Typography>
-      <div className="mt-4">
-        <AuthForm onSubmit={onSumbit}>
-          <div className="flex flex-col gap-2">
-            <Button
-              type="submit"
-              className="w-full"
-              disabled={signIn.isLoading || signUp.isLoading}
-            >
-              {(signIn.isLoading || signUp.isLoading) && (
-                <Loader2 className="animate-spin" />
-              )}
-              {mode === 'signin' ? 'Войти' : 'Зарегистрироваться'}
-            </Button>
-            <Button
-              type="button"
-              className="w-full"
-              variant="outline"
-              onClick={handleModeButtonClick}
-            >
-              {mode === 'signin' ? 'Зарегистрироваться' : 'Авторизоваться'}
-            </Button>
-          </div>
-        </AuthForm>
-        {(signIn.error || signUp.error) && (
-          <Typography className="text-red-600">
-            {signIn.error || signUp.error}
-          </Typography>
-        )}
-      </div>
+    <div className="ml-auto mr-auto h-full min-h-[70vh] max-w-md mt-10 md:mt-24 flex gap-4 overflow-hidden w-full relative">
+      <SignInForm
+        changeMode={changeMode}
+        currentMode={mode}
+        isLoading={signIn.isLoading}
+        onSubmit={onSubmit}
+        error={signIn.error}
+      />
+      <SignUpForm
+        changeMode={changeMode}
+        currentMode={mode}
+        isLoading={signUp.isLoading}
+        onSubmit={onSubmit}
+        error={signUp.error}
+      />
     </div>
   );
 };

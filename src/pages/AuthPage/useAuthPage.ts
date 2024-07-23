@@ -3,9 +3,11 @@ import { useState } from 'react';
 import { LocalStorageManager, useSignInMutate, useSignUpMutate } from '@/api';
 import { useAuthStore } from '@/store';
 
+import { Mode } from './type';
+
 export const useAuthPage = () => {
   const setIsAuth = useAuthStore((state) => state.setIsAuth);
-  const [mode, setMode] = useState<'signin' | 'signup'>('signin');
+  const [mode, setMode] = useState<Mode>('signin');
 
   const signUpMutate = useSignUpMutate({
     onSuccess: () => setMode('signin'),
@@ -18,12 +20,12 @@ export const useAuthPage = () => {
     },
   });
 
-  const onSumbit = (data: { login: string; password: string }) => {
+  const onSubmit = (data: { login: string; password: string }) => {
     if (mode === 'signin') signInMutate.mutateAsync(data);
     else signUpMutate.mutateAsync(data);
   };
 
-  const handleModeButtonClick = () => {
+  const changeMode = () => {
     setMode(mode === 'signin' ? 'signup' : 'signin');
     signInMutate.reset();
     signUpMutate.reset();
@@ -39,7 +41,7 @@ export const useAuthPage = () => {
       isLoading: signUpMutate.isPending,
       error: signUpMutate.error?.message,
     },
-    onSumbit,
-    handleModeButtonClick,
+    onSubmit,
+    changeMode,
   };
 };
