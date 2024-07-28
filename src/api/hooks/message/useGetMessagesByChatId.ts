@@ -39,23 +39,20 @@ export const updateInfinityMessagesCache = (
       pageParams: {
         page: number;
         length: number;
-      } | null;
+      };
     }): {
       pages: getMessagesResponse[];
       pageParams: {
         page: number;
         length: number;
-      } | null;
+      };
     } => {
       if (!oldData)
         return {
           pages: [
             {
               messages: [newMessage],
-              nextCursor: {
-                length: 80,
-                page: 1,
-              },
+              nextCursor: null,
             },
           ],
           pageParams: {
