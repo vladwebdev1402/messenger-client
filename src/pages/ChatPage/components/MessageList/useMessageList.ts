@@ -1,11 +1,12 @@
 import { RefObject, useEffect, useLayoutEffect, useRef } from 'react';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { useQueryClient } from '@tanstack/react-query';
 
 import {
   updateInfinityMessagesCache,
   useGetInfinityMessagesByChatId,
 } from '@/api';
+import { useCreateChatStore } from '@/components';
 import { useAuthStore, useSocketStore } from '@/store';
 import { Message } from '@/types';
 
@@ -13,10 +14,12 @@ import { sortByDate } from './helpers';
 
 export const useMessageList = (listRef: RefObject<HTMLDivElement>) => {
   const { id } = useParams<{ id: string }>();
+  const currentUserId = useCreateChatStore((state) => state.userId);
   const user = useAuthStore((state) => state.user);
   const socket = useSocketStore((state) => state.socket);
   const isScrolled = useRef(false);
   const client = useQueryClient();
+  const navigate = useNavigate();
 
   const { data, fetchNextPage, isLoading, isFetching } =
     useGetInfinityMessagesByChatId(Number(id));
@@ -35,6 +38,11 @@ export const useMessageList = (listRef: RefObject<HTMLDivElement>) => {
     });
     setTimeout(() => fetchNextPage(), 150);
   };
+
+  useLayoutEffect(() => {
+    const idChat = Number(id);
+    if (currentUserId === null && Number.isNaN(idChat)) navigate('/');
+  }, [id, currentUserId, navigate]);
 
   useEffect(() => {
     const handleMessageReceive = (message: Message) => {

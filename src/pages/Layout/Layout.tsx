@@ -8,12 +8,15 @@ const Layout = () => {
   const { isOpen, changeIsOpen } = useLayout();
 
   return (
-    <div className="flex h-screen overflow-hidden">
+    <div className="flex h-screen">
       <aside
-        className={clsx('w-full border-r-2 border-r-border transition-all', {
-          'max-w-full sm:max-w-[320px]': isOpen,
-          'max-w-0 sm:max-w-[80px]': !isOpen,
-        })}
+        className={clsx(
+          'w-full border-r-2 border-r-border transition-all overflow-hidden',
+          {
+            'max-w-full sm:max-w-[320px]': isOpen,
+            'max-w-0 sm:max-w-[80px]': !isOpen,
+          },
+        )}
       >
         <ChatList isLayoutOpen={isOpen} changeIsOpenLayout={changeIsOpen} />
       </aside>

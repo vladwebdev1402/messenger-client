@@ -1,5 +1,8 @@
+import { QueryClient, useQuery } from '@tanstack/react-query';
+
 import { AllChatsResponse, ChatService } from '@/api/requests';
-import { useQuery } from '@tanstack/react-query';
+
+import { Chat, User } from '@/types';
 
 export const useGetChats = () =>
   useQuery<AllChatsResponse>({
@@ -7,3 +10,14 @@ export const useGetChats = () =>
     queryKey: ['chats'],
     queryFn: async () => await ChatService.getAllChats(),
   });
+
+export const updateChatsCashe = (
+  client: QueryClient,
+  chat: Chat,
+  user: User,
+) => {
+  client.setQueryData(['chats'], (oldData: AllChatsResponse) => [
+    ...oldData,
+    { idChat: chat.id, user },
+  ]);
+};

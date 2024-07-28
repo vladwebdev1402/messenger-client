@@ -4,15 +4,21 @@ import { useEffect } from 'react';
 import { useAuthStore, useChatsStore, useSocketStore } from '@/store';
 import { useGetMessagesByChatId } from '@/api';
 
-export const useChatCard = (idChat: number | null) => {
+import { useCreateChatStore } from './store';
+
+export const useChatCard = (idChat: number | null, userId: number) => {
   const navigate = useNavigate();
+  const setUserId = useCreateChatStore((state) => state.setUserId);
   const { data, error, isLoading } = useGetMessagesByChatId(idChat, 1);
 
   const setOnline = useChatsStore((state) => state.setOnline);
   const currentUser = useAuthStore((state) => state.user);
   const socket = useSocketStore((state) => state.socket);
 
-  const handleChatClick = () => navigate('/' + idChat);
+  const handleChatClick = () => {
+    if (idChat === null) setUserId(userId);
+    navigate('/' + idChat);
+  };
 
   useEffect(() => {
     if (socket && currentUser && idChat !== null) {

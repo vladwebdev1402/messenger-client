@@ -14,6 +14,7 @@ export const useGetMessagesByChatId = (idChat: number | null, length = 20) =>
 
 export const useGetInfinityMessagesByChatId = (idChat: number) =>
   useInfiniteQuery({
+    enabled: !Number.isNaN(idChat),
     refetchOnWindowFocus: false,
     queryKey: ['message', idChat],
     initialPageParam: { page: 1, length: 80 },
@@ -33,7 +34,36 @@ export const updateInfinityMessagesCache = (
 ) => {
   client.setQueryData(
     ['message', idChat],
-    (oldData: { pages: getMessagesResponse[]; pageParams: number }) => {
+    (oldData?: {
+      pages: getMessagesResponse[];
+      pageParams: {
+        page: number;
+        length: number;
+      } | null;
+    }): {
+      pages: getMessagesResponse[];
+      pageParams: {
+        page: number;
+        length: number;
+      } | null;
+    } => {
+      if (!oldData)
+        return {
+          pages: [
+            {
+              messages: [newMessage],
+              nextCursor: {
+                length: 80,
+                page: 1,
+              },
+            },
+          ],
+          pageParams: {
+            length: 80,
+            page: 1,
+          },
+        };
+
       return {
         ...oldData,
         pages: oldData.pages.map((page, index) => {

@@ -13,7 +13,7 @@ type Props = {
 };
 
 const ChatCard: FC<Props> = ({ idChat, user }) => {
-  const { isLoading, data, handleChatClick } = useChatCard(idChat);
+  const { isLoading, data, handleChatClick } = useChatCard(idChat, user.id);
 
   if (isLoading) return <ChatCardSkeleton />;
 

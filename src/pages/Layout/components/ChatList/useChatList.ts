@@ -1,9 +1,15 @@
 import { useEffect, useState } from 'react';
 import { useQueryClient } from '@tanstack/react-query';
+import { useNavigate } from 'react-router-dom';
 
 import { useChatsStore, useSocketStore } from '@/store';
-import { updateMessagesCache, useGetChats } from '@/api';
-import { Message } from '@/types';
+import {
+  updateChatsCashe,
+  updateInfinityMessagesCache,
+  updateMessagesCache,
+  useGetChats,
+} from '@/api';
+import { Chat, Message, User } from '@/types';
 import { useDebounce } from '@/hooks';
 
 export const useChatList = () => {
@@ -12,6 +18,7 @@ export const useChatList = () => {
   const chats = useChatsStore((state) => state.chats);
   const socket = useSocketStore((state) => state.socket);
   const client = useQueryClient();
+  const navigate = useNavigate();
 
   const { isLoading, error, data } = useGetChats();
 
@@ -20,18 +27,39 @@ export const useChatList = () => {
   const debounceSearch = useDebounce(handleSearch, 500);
 
   useEffect(() => {
+    const handleChatCreate = ({
+      chat,
+      message,
+      creator,
+      user,
+    }: {
+      message: Message;
+      chat: Chat;
+      user: User;
+      creator: boolean;
+    }) => {
+      updateChatsCashe(client, chat, user);
+      updateMessagesCache(chat.id, client, message);
+      updateInfinityMessagesCache(chat.id, client, message);
+      if (creator) navigate('/' + chat.id);
+    };
+
     const handleMessageReceive = (message: Message) => {
       updateMessagesCache(Number(message.idChat), client, message);
     };
 
     if (socket) {
       socket.on('message/receive', handleMessageReceive);
+      socket.on('chat/private/create', handleChatCreate);
     }
 
     return () => {
-      if (socket) socket.off('message/receive', handleMessageReceive);
+      if (socket) {
+        socket.off('message/receive', handleMessageReceive);
+        socket.off('chat/private/create', handleChatCreate);
+      }
     };
-  }, [socket, client]);
+  }, [socket, client, navigate]);
 
   useEffect(() => {
     if (data) {

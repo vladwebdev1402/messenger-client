@@ -13,7 +13,7 @@ const SearchedChatsList: FC<SearchedChatsListProps> = ({ searchLogin }) => {
 
   if (searchLogin !== '')
     return (
-      <div>
+      <div className="overflow-auto max-h-[calc(100dvh-76px)] scroll">
         {searchResult.myChats.map((chat) => (
           <ChatCard key={chat.idChat} idChat={chat.idChat} user={chat.user} />
         ))}
