@@ -1,4 +1,4 @@
-import { RefObject, useEffect, useLayoutEffect, useRef } from 'react';
+import { RefObject, useEffect, useLayoutEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useQueryClient } from '@tanstack/react-query';
 
@@ -17,7 +17,6 @@ export const useMessageList = (listRef: RefObject<HTMLDivElement>) => {
   const currentUserId = useCreateChatStore((state) => state.userId);
   const user = useAuthStore((state) => state.user);
   const socket = useSocketStore((state) => state.socket);
-  const isScrolled = useRef(false);
   const client = useQueryClient();
   const navigate = useNavigate();
 
@@ -32,10 +31,9 @@ export const useMessageList = (listRef: RefObject<HTMLDivElement>) => {
     : [];
 
   const sortedData = sortByDate(getMessagesFromPages);
+
   const handleAddLength = async () => {
-    listRef.current?.scrollTo({
-      top: 900,
-    });
+    if (listRef.current) listRef.current.scrollTo({ top: 900 });
     setTimeout(() => fetchNextPage(), 150);
   };
 
@@ -64,17 +62,21 @@ export const useMessageList = (listRef: RefObject<HTMLDivElement>) => {
     };
   }, [socket, id, client, user, listRef]);
 
+  // отвечает за скролл после получения первого ответа
   useEffect(() => {
-    if (
-      listRef.current &&
-      Object.keys(sortedData).length !== 0 &&
-      !isScrolled.current
-    ) {
-      listRef.current.scrollTo({ top: listRef.current.scrollHeight });
-      isScrolled.current = true;
+    if (listRef.current && !isLoading && data?.pages.length === 1) {
+      listRef.current.scrollTo({ top: 1000000 });
     }
-  }, [listRef, sortedData, isScrolled, id]);
+  }, [listRef, isLoading, data]);
 
+  // отвечает за скролл при переходе на чат
+  useEffect(() => {
+    if (listRef.current) {
+      listRef.current.scrollTo({ top: 1000000 });
+    }
+  }, [id, listRef]);
+
+  // отвечает за скролл до рендера при переходе на чат
   useLayoutEffect(() => {
     if (listRef.current) {
       listRef.current.scrollTo({ top: 1000000 });

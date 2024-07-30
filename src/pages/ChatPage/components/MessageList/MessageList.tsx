@@ -16,7 +16,10 @@ const MessageList: FC<Props> = ({ listRef }) => {
 
   if (isLoading) {
     return (
-      <div className="flex flex-col gap-3 p-3 overflow-auto h-[calc(100dvh-72px-96px)] scroll relative">
+      <div
+        className="flex flex-col gap-3 p-3 overflow-auto h-[calc(100dvh-72px-96px)] scroll relative"
+        ref={listRef}
+      >
         <div className="flex flex-col gap-3 p-3">
           <MessageListSkeleton />
           <MessageListSkeleton />
@@ -32,7 +35,7 @@ const MessageList: FC<Props> = ({ listRef }) => {
         ref={listRef}
       >
         <InfinityScroll
-          isLoading={isFetching}
+          isLoading={cursor !== null && isFetching}
           isStopScroll={Object.keys(sortedData).length === 0 || cursor === null}
           loader={
             <div className="flex flex-col gap-3 p-3">
@@ -41,7 +44,7 @@ const MessageList: FC<Props> = ({ listRef }) => {
           }
           onObserve={handleAddLength}
           className={clsx('top-[250px] left-0 w-full', {
-            absolute: !isFetching,
+            absolute: cursor === null || !isFetching,
           })}
         />
         {Object.keys(sortedData).length === 0 && (
