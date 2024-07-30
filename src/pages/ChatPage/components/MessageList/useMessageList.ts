@@ -46,7 +46,11 @@ export const useMessageList = (listRef: RefObject<HTMLDivElement>) => {
     const handleMessageReceive = (message: Message) => {
       updateInfinityMessagesCache(Number(id), client, message);
 
-      if (user && user.id === message.idUser) {
+      if (
+        listRef.current &&
+        ((user && user.id === message.idUser) ||
+          listRef.current.scrollHeight - listRef.current.scrollTop < 1000)
+      ) {
         setTimeout(() => {
           listRef.current?.scrollTo({ top: 1000000 });
         }, 50);
