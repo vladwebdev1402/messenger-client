@@ -20,6 +20,13 @@ export const useChatList = () => {
 
   const { isLoading, error, data } = useGetChats();
 
+  const sortedByDateChats =
+    data?.sort(
+      (a, b) =>
+        new Date(b.lastMessage.createdAt).getTime() -
+        new Date(a.lastMessage.createdAt).getTime(),
+    ) ?? [];
+
   const handleSearch = (value: string) => setSearchLogin(value);
 
   const debounceSearch = useDebounce(handleSearch, 500);
@@ -62,7 +69,7 @@ export const useChatList = () => {
   return {
     isLoading,
     error,
-    chats: data,
+    chats: sortedByDateChats,
     searchLogin,
     debounceSearch,
   };
