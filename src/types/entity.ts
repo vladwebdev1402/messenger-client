@@ -7,6 +7,7 @@ export type User = {
 export type Chat = {
   id: number;
   name: string;
+  isPublic: string;
 };
 
 export type ChatMember = {

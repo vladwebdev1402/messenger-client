@@ -1,21 +1,19 @@
 import { FC } from 'react';
 
-import { User } from '@/types';
+import { Chat, Message, User } from '@/types';
 import { getTime } from '@/helpers';
 
 import { Avatar, AvatarFallback, Typography } from '../ui';
 import { useChatCard } from './useChatCard';
-import { ChatCardSkeleton } from './ChatCardSkeleton';
 
 type Props = {
-  idChat: number | null;
   user: User;
+  chat?: Chat;
+  lastMessage?: Message;
 };
 
-const ChatCard: FC<Props> = ({ idChat, user }) => {
-  const { isLoading, data, handleChatClick } = useChatCard(idChat, user.id);
-
-  if (isLoading) return <ChatCardSkeleton />;
+const ChatCard: FC<Props> = ({ user, chat, lastMessage }) => {
+  const { handleChatClick } = useChatCard(user.id, chat?.id);
 
   return (
     <div
@@ -32,18 +30,16 @@ const ChatCard: FC<Props> = ({ idChat, user }) => {
         <Typography variant="p" className="font-medium text-nowrap">
           {user.login}
         </Typography>
-        {idChat !== null && (
+        {lastMessage && (
           <Typography variant="p" className="mt-2 flex gap-2 justify-between">
-            {data && (
-              <>
-                <div className="overflow-hidden w-full text-ellipsis text-nowrap">
-                  {data.at(-1)?.message}
-                </div>
-                <span className="text-xs pl-2 text-end mt-3 font-medium">
-                  {getTime(data.at(-1)?.createdAt || '')}
-                </span>
-              </>
-            )}
+            <>
+              <div className="overflow-hidden w-full text-ellipsis text-nowrap">
+                {lastMessage.message}
+              </div>
+              <span className="text-xs pl-2 text-end mt-3 font-medium">
+                {getTime(lastMessage.createdAt || '')}
+              </span>
+            </>
           </Typography>
         )}
       </div>

@@ -1,22 +1,22 @@
 import { useNavigate } from 'react-router-dom';
 import { useEffect } from 'react';
+import { useQueryClient } from '@tanstack/react-query';
 
-import { useAuthStore, useChatsStore, useSocketStore } from '@/store';
-import { useGetMessagesByChatId } from '@/api';
+import { updateOnlineInCashe } from '@/api';
+import { useAuthStore, useSocketStore } from '@/store';
 
 import { useCreateChatStore } from './store';
 
-export const useChatCard = (idChat: number | null, userId: number) => {
+export const useChatCard = (userId: number, idChat?: number) => {
   const navigate = useNavigate();
   const setUserId = useCreateChatStore((state) => state.setUserId);
-  const { data, error, isLoading } = useGetMessagesByChatId(idChat, 1);
+  const client = useQueryClient();
 
-  const setOnline = useChatsStore((state) => state.setOnline);
   const currentUser = useAuthStore((state) => state.user);
   const socket = useSocketStore((state) => state.socket);
 
   const handleChatClick = () => {
-    if (idChat === null) setUserId(userId);
+    if (!idChat) setUserId(userId);
     navigate('/' + idChat);
   };
 
@@ -31,11 +31,11 @@ export const useChatCard = (idChat: number | null, userId: number) => {
       socket.emit('chat/join', { idChat, idUser: currentUser.id });
 
       const handleConnect = (idUser: number) => {
-        setOnline(idUser, true);
+        updateOnlineInCashe(client, idUser, true);
       };
 
       const handleDisconnect = (idUser: number) => {
-        setOnline(idUser, false);
+        updateOnlineInCashe(client, idUser, false);
       };
 
       socket.on('chat/connect', handleConnect);
@@ -50,7 +50,7 @@ export const useChatCard = (idChat: number | null, userId: number) => {
         }
       };
     }
-  }, [socket, currentUser, idChat, setOnline]);
+  }, [socket, currentUser, idChat, client]);
 
-  return { isLoading, error, data: data?.messages, handleChatClick };
+  return { handleChatClick };
 };

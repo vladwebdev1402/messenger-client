@@ -1,6 +1,7 @@
-import { User } from '@/types';
+import { Chat, Message, User } from '@/types';
 
 export type AllChatsResponse = {
-  idChat: number;
+  chat: Chat;
   user: User;
+  lastMessage: Message;
 }[];

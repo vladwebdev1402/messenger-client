@@ -15,7 +15,7 @@ const SearchedChatsList: FC<SearchedChatsListProps> = ({ searchLogin }) => {
     return (
       <div className="overflow-auto max-h-[calc(100dvh-76px)] scroll">
         {searchResult.myChats.map((chat) => (
-          <ChatCard key={chat.idChat} idChat={chat.idChat} user={chat.user} />
+          <ChatCard key={chat.chat.id} chat={chat.chat} user={chat.user} />
         ))}
         {searchFetching && <ChatListSkeleton />}
         {!searchFetching && searchResult.searchChats.length > 0 && (
@@ -25,7 +25,7 @@ const SearchedChatsList: FC<SearchedChatsListProps> = ({ searchLogin }) => {
         )}
         {!searchFetching &&
           searchResult.searchChats.map((user) => (
-            <ChatCard key={user.id} idChat={null} user={user} />
+            <ChatCard key={user.id} user={user} />
           ))}
         {!searchFetching && searchResult.searchChats.length === 0 && (
           <Typography className="mt-4 text-center">

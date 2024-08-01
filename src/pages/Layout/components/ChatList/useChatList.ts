@@ -2,11 +2,11 @@ import { useEffect, useState } from 'react';
 import { useQueryClient } from '@tanstack/react-query';
 import { useNavigate } from 'react-router-dom';
 
-import { useChatsStore, useSocketStore } from '@/store';
+import { useSocketStore } from '@/store';
 import {
-  updateChatsCashe,
+  addChatInCashe,
   updateInfinityMessagesCache,
-  updateMessagesCache,
+  updateLastMessageInCashe,
   useGetChats,
 } from '@/api';
 import { Chat, Message, User } from '@/types';
@@ -14,8 +14,6 @@ import { useDebounce } from '@/hooks';
 
 export const useChatList = () => {
   const [searchLogin, setSearchLogin] = useState('');
-  const setChats = useChatsStore((state) => state.setChats);
-  const chats = useChatsStore((state) => state.chats);
   const socket = useSocketStore((state) => state.socket);
   const client = useQueryClient();
   const navigate = useNavigate();
@@ -38,14 +36,14 @@ export const useChatList = () => {
       user: User;
       creator: boolean;
     }) => {
-      updateChatsCashe(client, chat, user);
-      updateMessagesCache(chat.id, client, message);
+      addChatInCashe(client, chat, user, message);
+      updateLastMessageInCashe(client, chat.id, message);
       updateInfinityMessagesCache(chat.id, client, message);
       if (creator) navigate('/' + chat.id);
     };
 
     const handleMessageReceive = (message: Message) => {
-      updateMessagesCache(Number(message.idChat), client, message);
+      updateLastMessageInCashe(client, Number(message.idChat), message);
     };
 
     if (socket) {
@@ -61,16 +59,10 @@ export const useChatList = () => {
     };
   }, [socket, client, navigate]);
 
-  useEffect(() => {
-    if (data) {
-      setChats(data);
-    }
-  }, [data, setChats]);
-
   return {
     isLoading,
     error,
-    chats,
+    chats: data,
     searchLogin,
     debounceSearch,
   };

@@ -57,7 +57,12 @@ const ChatList = ({ isLayoutOpen, changeIsOpenLayout }: ChatListProps) => {
       {chats && searchLogin === '' && (
         <div className="overflow-auto scroll max-h-[calc(100dvh-76px)]">
           {chats.map((chat) => (
-            <ChatCard key={chat.idChat} idChat={chat.idChat} user={chat.user} />
+            <ChatCard
+              key={chat.chat.id}
+              chat={chat.chat}
+              user={chat.user}
+              lastMessage={chat.lastMessage}
+            />
           ))}
         </div>
       )}
