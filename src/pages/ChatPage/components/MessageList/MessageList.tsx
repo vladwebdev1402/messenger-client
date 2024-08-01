@@ -17,7 +17,7 @@ const MessageList: FC<Props> = ({ listRef }) => {
   if (isLoading) {
     return (
       <div
-        className="flex flex-col gap-3 p-3 overflow-auto h-[calc(100dvh-72px-96px)] scroll relative"
+        className="flex flex-col gap-3 p-3 overflow-auto h-[calc(100dvh-72px-96px)] scroll relative justify-end"
         ref={listRef}
       >
         <div className="flex flex-col gap-3 p-3">
@@ -57,20 +57,24 @@ const MessageList: FC<Props> = ({ listRef }) => {
             </Typography>
           </div>
         )}
-        {Object.keys(sortedData).map((date) => (
-          <div className="flex flex-col gap-3 p-3" key={date}>
-            <div className="self-center text-sm rounded p-1 bg-border dark:bg-primary-foreground">
-              {date}
-            </div>
-            {sortedData[date].map((msg) => (
-              <MessageCard
-                message={msg}
-                isMyMessage={msg.idUser === user.id}
-                key={msg.id}
-              />
+        {Object.keys(sortedData).length > 0 && (
+          <div className="mt-auto">
+            {Object.keys(sortedData).map((date) => (
+              <div className="flex flex-col gap-3 p-3" key={date}>
+                <div className="self-center text-sm rounded p-1 bg-border dark:bg-primary-foreground">
+                  {date}
+                </div>
+                {sortedData[date].map((msg) => (
+                  <MessageCard
+                    message={msg}
+                    isMyMessage={msg.idUser === user.id}
+                    key={msg.id}
+                  />
+                ))}
+              </div>
             ))}
           </div>
-        ))}
+        )}
       </div>
     );
 };

@@ -14,7 +14,7 @@ const Layout = () => {
           'w-full border-r-2 border-r-border transition-all overflow-hidden',
           {
             'max-w-full sm:max-w-[320px]': isOpen,
-            'max-w-0 sm:max-w-[80px]': !isOpen,
+            'max-w-0 sm:max-w-[86px]': !isOpen,
           },
         )}
       >

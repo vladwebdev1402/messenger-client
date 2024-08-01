@@ -14,9 +14,17 @@ type ChatListProps = {
 };
 
 const ChatList = ({ isLayoutOpen, changeIsOpenLayout }: ChatListProps) => {
-  const { chats, isLoading, debounceSearch, searchLogin } = useChatList();
+  const {
+    chats,
+    isLoading,
+    debouceSearchLogin,
+    searchLogin,
+    debounceSearch,
+    setSearchLogin,
+  } = useChatList();
 
   const handleSearchChange = (e: ChangeEvent<HTMLInputElement>) => {
+    setSearchLogin(e.target.value);
     debounceSearch(e.target.value);
   };
 
@@ -32,7 +40,11 @@ const ChatList = ({ isLayoutOpen, changeIsOpenLayout }: ChatListProps) => {
         )}
       >
         {isLayoutOpen && (
-          <Input placeholder="Поиск..." onChange={handleSearchChange} />
+          <Input
+            placeholder="Поиск..."
+            onChange={handleSearchChange}
+            value={searchLogin}
+          />
         )}
 
         <Button
@@ -51,10 +63,10 @@ const ChatList = ({ isLayoutOpen, changeIsOpenLayout }: ChatListProps) => {
         </Button>
       </div>
 
-      <SearchedChatsList searchLogin={searchLogin} />
+      <SearchedChatsList searchLogin={debouceSearchLogin} />
       {isLoading && <ChatListSkeleton />}
 
-      {chats && searchLogin === '' && (
+      {chats && debouceSearchLogin === '' && (
         <div className="overflow-auto scroll max-h-[calc(100dvh-76px)]">
           {chats.map((chat) => (
             <ChatCard

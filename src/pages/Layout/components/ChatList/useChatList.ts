@@ -13,7 +13,9 @@ import { Chat, Message, User } from '@/types';
 import { useDebounce } from '@/hooks';
 
 export const useChatList = () => {
+  const [debouceSearchLogin, setDebouceSearchLogin] = useState('');
   const [searchLogin, setSearchLogin] = useState('');
+
   const socket = useSocketStore((state) => state.socket);
   const client = useQueryClient();
   const navigate = useNavigate();
@@ -27,7 +29,7 @@ export const useChatList = () => {
         new Date(a.lastMessage.createdAt).getTime(),
     ) ?? [];
 
-  const handleSearch = (value: string) => setSearchLogin(value);
+  const handleSearch = (value: string) => setDebouceSearchLogin(value);
 
   const debounceSearch = useDebounce(handleSearch, 500);
 
@@ -70,7 +72,9 @@ export const useChatList = () => {
     isLoading,
     error,
     chats: sortedByDateChats,
+    debouceSearchLogin,
     searchLogin,
     debounceSearch,
+    setSearchLogin,
   };
 };

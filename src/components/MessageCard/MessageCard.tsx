@@ -14,7 +14,7 @@ type Props = {
 const MessageCard: FC<Props> = ({ message, isMyMessage }) => {
   return (
     <Card
-      className={clsx('self-start max-w-[560px] p-2', {
+      className={clsx('self-start max-w-[560px] p-2 animate-in', {
         'bg-secondary': isMyMessage,
       })}
     >
@@ -25,7 +25,7 @@ const MessageCard: FC<Props> = ({ message, isMyMessage }) => {
         <CardDescription className="text-primary break-words">
           {message.message}
           <span className="text-xs float-right pl-2 text-end mt-2 font-medium text-muted-foreground">
-            {getTime(message.createdAt)}
+            {getTime(message.createdAt, true)}
           </span>
         </CardDescription>
       </div>
